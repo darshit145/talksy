@@ -1,5 +1,5 @@
 class Images{
-  static const splashBackground="assets/images/img.png";
+  static const splashBackground="assets/images/img_1.png";
   static const appLogo="assets/images/app_logo.png";
   static const onboarding_1="assets/images/onboarding_1.png";
   static const onboarding_2="assets/images/onboarding_2.png";
@@ -11,6 +11,7 @@ class Images{
   static const userShild="assets/icon/user_shild.svg";
   static const fingureprintIcon="assets/icon/fingureprint_icon.svg";
   static const messageTimer="assets/icon/message_timer.svg";
+  static const googleIcon="assets/icon/google_icon.svg";
   static const shildIcon="assets/icon/shild_icon.svg";
   static const messagingIcon="assets/icon/messaging_icon.svg";
   static const callIcon="assets/icon/call_icon.svg";

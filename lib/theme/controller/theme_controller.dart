@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talksy/util/app_constant.dart';
+import 'package:talksy/util/app_constantSP.dart';
 
 class ThemeController extends ChangeNotifier{
   SharedPreferences sp;
@@ -9,14 +9,15 @@ class ThemeController extends ChangeNotifier{
   bool isDarkMod=false;
 
   bool isDarkModTheme(){
-    isDarkMod=sp.getBool(AppConst.themeSP)??false;
+    isDarkMod=sp.getBool(AppConstSP.themeSP)??false;
     // notifyListeners();
     return isDarkMod;
   }
+  bool get getThemeMod=>isDarkMod;
 
   void toggleTheme(){
     isDarkMod=!isDarkMod;
-    sp.setBool(AppConst.themeSP, isDarkMod);
+    sp.setBool(AppConstSP.themeSP, isDarkMod);
     notifyListeners();
   }
 

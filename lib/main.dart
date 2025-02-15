@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy/component/routs.dart';
 import 'package:talksy/di_container.dart';
 import 'package:talksy/features/splash/controller/splash_screen_controller.dart';
 import 'package:talksy/features/splash/screen/splash_screen.dart';
 import 'package:talksy/theme/controller/theme_controller.dart';
 import 'package:talksy/theme/dark_theme.dart';
 import 'package:talksy/theme/litght_theme.dart';
-import 'package:talksy/util/images.dart';
+
+import 'features/auth/controller/auth_controller.dart';
+import 'features/intro/controller/intro_screen_controller.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +21,14 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => SplashScreenController(),
         ),
+         ChangeNotifierProvider(
+          create: (context) => IntroScreenController(),
+        ),
         ChangeNotifierProvider(
           create: (context) => ThemeController(sp: sl<SharedPreferences>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthController(),
         ),
       ],
       child: MyApp(),
@@ -40,6 +48,7 @@ class MyApp extends StatelessWidget {
         theme: value.isDarkModTheme() ? darkTheme : lightTheme,
         title: 'Talksy',
         home: SplashScreen(),
+        routes: routes,
       );
     });
   }
