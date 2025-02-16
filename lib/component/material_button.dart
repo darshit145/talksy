@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talksy/util/font_family.dart';
 
 class MaterialButtonView extends StatelessWidget {
   final VoidCallback? callbackAction;
@@ -22,7 +23,7 @@ class MaterialButtonView extends StatelessWidget {
         style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
-            fontFamily: null,
+            fontFamily: FontFamily.robotoSimple,
             fontSize: 14), // White text for visibility
       ),
     );

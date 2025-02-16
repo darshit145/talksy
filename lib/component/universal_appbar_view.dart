@@ -5,6 +5,7 @@ import '../util/font_family.dart';
 class UniversalAppbarView extends StatelessWidget {
   final String title;
   final String? subTitle;
+
   const UniversalAppbarView({super.key,required this.title,required this.subTitle});
 
   @override
@@ -37,10 +38,11 @@ class UniversalAppbarView extends StatelessWidget {
       ),
     );
   }
- static AppBar getAppBar({required String title,required String? subTitle}){
+ static AppBar getAppBar({required String title,required String? subTitle,Color subTitleColor=Colors.black,double? toolbarHeight}){
     return AppBar(
       shape: null,
       forceMaterialTransparency: true,
+      toolbarHeight: toolbarHeight,
       automaticallyImplyLeading: false,
       elevation: 0,
       bottom: PreferredSize(preferredSize: Size(double.infinity, 10), child:Divider(
@@ -66,7 +68,7 @@ class UniversalAppbarView extends StatelessWidget {
               subTitle,
               style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black,
+                  color: subTitleColor,
                   fontWeight: FontWeight.w500,
                   fontFamily: FontFamily.robotoSimple),
             ):SizedBox()

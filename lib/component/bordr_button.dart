@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../util/font_family.dart';
 import '../util/images.dart';
 
 class BordrButton extends StatelessWidget {
@@ -44,6 +45,7 @@ class BordrButton extends StatelessWidget {
         Text(
           "Continue with Google",
           style: TextStyle(
+            fontFamily: FontFamily.robotoSimple,
             color: Color(0xFF374151),
           ),
         )

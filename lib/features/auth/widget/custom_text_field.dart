@@ -6,7 +6,9 @@ class MyTextField extends StatefulWidget {
   final String hintText;
   final TextEditingController controller;
   final bool obscureText;
-  const MyTextField({super.key,required this.obscureText,required this.hintText,required this.controller});
+  final Widget? prefix;
+  final TextInputType? keyboardType;
+  const MyTextField({super.key,this.keyboardType,this.prefix,required this.obscureText,required this.hintText,required this.controller});
 
   @override
   MyTextFieldState createState() => MyTextFieldState();
@@ -29,7 +31,9 @@ class MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTextFormFieldRow(
+      prefix: widget.prefix,
       controller:widget.controller ,
+      keyboardType: widget.keyboardType,
       obscureText: widget.obscureText,
       padding: EdgeInsets.zero,
       focusNode: _focusNode,
@@ -41,7 +45,7 @@ class MyTextFieldState extends State<MyTextField> {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      maxLength: 30,
+      maxLength:widget.prefix!=null?12: 30,
       placeholder: widget.hintText,
       placeholderStyle: TextStyle(
           fontSize: 16,

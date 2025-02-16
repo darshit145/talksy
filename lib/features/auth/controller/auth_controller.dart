@@ -5,4 +5,5 @@ class AuthController extends ChangeNotifier{
   TextEditingController controllerForName=TextEditingController();
   TextEditingController controllerForPass=TextEditingController();
   TextEditingController controllerForRePass=TextEditingController();
+  TextEditingController controllerForMobileNo=TextEditingController();
 }
