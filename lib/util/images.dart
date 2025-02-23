@@ -27,5 +27,7 @@ class Images{
   static const sendIcon="assets/icon/send_icon.svg";
   static const arrowRight="assets/icon/arrow_right.svg";
   static const pancilIcon="assets/icon/pancil_icon.svg";
+  static const personIcon="assets/icon/person_icon.svg";
+  static const notificationIcon="assets/icon/notification_icon.svg";
 }
 //Pacifico-Regular.ttf

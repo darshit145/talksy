@@ -84,8 +84,8 @@ class OtpValidationScreen extends StatelessWidget {
                     child: MaterialButtonView(
                       text: "Verify",
                       callbackAction: () {
-                        // Navigator.pushNamed(
-                        //     context, StringConst.routRegistraationScreen);
+                        Navigator.pushNamed(
+                            context, StringConst.routHomePage);
                       },
                     ),
                   ),

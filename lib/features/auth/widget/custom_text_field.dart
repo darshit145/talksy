@@ -38,7 +38,12 @@ class MyTextFieldState extends State<MyTextField> {
       padding: EdgeInsets.zero,
       focusNode: _focusNode,
       cursorColor: Colors.black,
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.black,
+      ),
       decoration: BoxDecoration(
+
         border: Border.all(
           color: _isFocused ? Colors.black : Color(0xFFD1D5DB),
           width: _isFocused?2:1,
@@ -48,7 +53,7 @@ class MyTextFieldState extends State<MyTextField> {
       maxLength:widget.prefix!=null?12: 30,
       placeholder: widget.hintText,
       placeholderStyle: TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           color: Color(0xFF6B7280)
       ),
     );

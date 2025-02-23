@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:talksy/features/home/screen/home_page.dart';
 import 'package:talksy/features/intro/screen/intro_screen.dart';
 import 'package:talksy/util/string_const.dart';
 
@@ -17,4 +18,5 @@ Map<String, WidgetBuilder> routes = {
   StringConst.routLoginScreenMail: (context) => LoginScreenMail(),
   StringConst.routMobileAuthScreen: (context) => MobileAuthScreen(),
   StringConst.routOtpValidationScreen: (context) => OtpValidationScreen(),
+  StringConst.routHomePage: (context) =>  HomePage(),
 };

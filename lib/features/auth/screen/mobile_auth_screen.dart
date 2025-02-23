@@ -52,7 +52,9 @@ class MobileAuthScreen extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           margin: EdgeInsets.symmetric(horizontal: 1, vertical: 1),
                           hideMainText: true,
-                          onChanged: (country) {},
+                          onChanged: (country) {
+                            print(country);
+                          },
                           showCountryOnly: true,
                           showOnlyCountryWhenClosed: true,
                           favorite: ['+1', '+91'],
