@@ -4,6 +4,7 @@ import 'package:talksy/features/auth/domain/repo/auth_repo.dart';
 import 'package:talksy/features/auth/domain/repo/auth_repo_interface.dart';
 import 'package:talksy/features/auth/domain/services/auth_services.dart';
 import 'package:talksy/features/auth/domain/services/auth_services_interface.dart';
+import 'package:talksy/features/userprofile/controller/user_profile_controller.dart';
 import 'package:talksy/theme/controller/theme_controller.dart';
 import 'features/auth/controller/auth_controller.dart';
 import 'features/splash/controller/splash_screen_controller.dart';
@@ -17,11 +18,14 @@ Future<void> dioInit() async {
   //theme
   sl.registerLazySingleton<ThemeController>(() => ThemeController(sp: sl()));
   //splash
-  sl.registerLazySingleton(() => SplashScreenController());
+  sl.registerLazySingleton(() => SplashScreenController(sp: sl()));
   //Auth
   sl.registerLazySingleton<AuthRepoInterface>(() => AuthRepo());
   sl.registerLazySingleton<AuthServicesInterface>(() => AuthServices(repoInterface: sl()));
-  sl.registerLazySingleton(() => AuthController());
+  sl.registerLazySingleton(() => AuthController(sp: sl()));
+
+  //Profile Screen Controller
+  sl.registerLazySingleton(() => UserProfileController(sp: sl()),);
 
 
 }

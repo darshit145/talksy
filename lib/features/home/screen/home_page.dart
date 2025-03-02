@@ -21,7 +21,9 @@ class HomePage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: ColorConst.getWhite(context),
-        floatingActionButton: globalFloat(context),
+        floatingActionButton:FloatingActionButton(onPressed: () {
+          print(generateChatTableName("dfachara10"," dfachara1"));
+        },),
         appBar: AppBar(
           backgroundColor: ColorConst.getWhite(context),
           automaticallyImplyLeading: false,
@@ -205,4 +207,8 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+String generateChatTableName(String userId1, String userId2) {
+  List<String> sortedIds = [userId1, userId2]..sort();
+  return "${sortedIds[0]}_${sortedIds[1]}"; // Example: dfachara7_dfachara10
 }

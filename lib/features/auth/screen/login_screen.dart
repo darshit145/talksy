@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:talksy/component/bordr_button.dart';
 import 'package:talksy/component/material_button.dart';
 import 'package:talksy/component/universal_appbar_view.dart';
@@ -11,11 +12,14 @@ import 'package:talksy/util/font_family.dart';
 import 'package:talksy/util/images.dart';
 import 'package:talksy/util/string_const.dart';
 
+import '../controller/auth_controller.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    REMAINTODO();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: UniversalAppbarView.getAppBar(
@@ -28,32 +32,33 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               spacing: 20,
               children: [
-                SizedBox(
-                  height: 53,
-                  width: double.infinity,
-                  child: MaterialButtonView(
-                    text: "Sign up",
-                    callbackAction: () {
-                      Navigator.pushNamed(
-                          context, StringConst.routRegistraationScreen);
-                    },
-                  ),
-                ),
-                BordrButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, StringConst.routLoginScreenMail);
-                  },
-                  btnChild: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontFamily: FontFamily.robotoSimple,
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 53,
+                //   width: double.infinity,
+                //   child: MaterialButtonView(
+                //     text: "Sign up",
+                //     callbackAction: () {
+                //       print("okokokookoko");
+                //       Navigator.pushNamed(
+                //           context, StringConst.routRegistraationScreen);
+                //     },
+                //   ),
+                // ),
+                // BordrButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(
+                //         context, StringConst.routLoginScreenMail);
+                //   },
+                //   btnChild: Text(
+                //     "Login",
+                //     style: TextStyle(
+                //       fontFamily: FontFamily.robotoSimple,
+                //       color: Colors.black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w600,
+                //     ),
+                //   ),
+                // ),
                 Row(
                   spacing: 5,
                   children: [
@@ -76,7 +81,10 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 BordrButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("object");
+                    context.read<AuthController>().loginViaGmail(context);
+                  },
                   btnChild: BordrButton.googleLoginButton(),
                   borderColor: Color(0xFFD1D5DB),
                 ),
@@ -122,31 +130,31 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void showCupertinoSnackbar(String message) {
-    print("object");
-    final snackbar = CupertinoPopupSurface(
-      isSurfacePainted: true,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          message,
-          style: const TextStyle(
-              color: Colors.white, fontFamily: FontFamily.robotoSimple),
-        ),
-      ),
-    );
 
-    ScaffoldMessenger.of(Get.context!).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        duration: const Duration(seconds: 2),
-        content: snackbar,
+}
+void showCupertinoSnackbar(String message) {
+  final snackbar = CupertinoPopupSurface(
+    isSurfacePainted: true,
+    child: Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
       ),
-    );
-  }
+      child: Text(
+        message,
+        style: const TextStyle(
+            color: Colors.white, fontFamily: FontFamily.robotoSimple),
+      ),
+    ),
+  );
+
+  ScaffoldMessenger.of(Get.context!).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      duration: const Duration(seconds: 2),
+      content: snackbar,
+    ),
+  );
 }

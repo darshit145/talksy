@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy/util/app_constantSP.dart';
 import 'package:talksy/util/string_const.dart';
 
 import '../../../component/material_button.dart';
@@ -9,7 +11,8 @@ import '../../../util/images.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
   final PageController pageController;
-  const OnboardingScreen3({super.key, required this.pageController});
+  final SharedPreferences sharedPreferences;
+  const OnboardingScreen3({super.key,required this.sharedPreferences, required this.pageController});
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +110,7 @@ class OnboardingScreen3 extends StatelessWidget {
                 MaterialButtonView(
                   text: "Next",
                   callbackAction: () {
+                    sharedPreferences.setBool(AppConstSP.onBoardingNavigation, false);
                       Navigator.pushReplacementNamed(context, StringConst.routAuthScreen);
                   },
                 )

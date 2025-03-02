@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../di_container.dart';
 import '../controller/intro_screen_controller.dart';
 import '../widget/onboarding_screen_1.dart';
 import '../widget/onboarding_screen_2.dart';
@@ -24,7 +25,7 @@ class IntroScreen extends StatelessWidget {
         children: [
           OnboardingScreen1(pageController: _pageController,),
           OnboardingScreen2(pageController: _pageController,),
-          OnboardingScreen3(pageController: _pageController,),
+          OnboardingScreen3(pageController: _pageController,sharedPreferences: sl(),),
         ],
       ),
     );

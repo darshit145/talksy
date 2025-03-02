@@ -18,7 +18,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.read<SplashScreenController>().splashScreen(context: context);
+    Future.delayed(Duration(seconds: 1),).then((value) {
+      context.read<SplashScreenController>().splashScreen(context: context);
+    },);
     super.initState();
   }
   @override

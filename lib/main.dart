@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,24 +12,32 @@ import 'package:talksy/theme/litght_theme.dart';
 
 import 'features/auth/controller/auth_controller.dart';
 import 'features/intro/controller/intro_screen_controller.dart';
+import 'features/userprofile/controller/user_profile_controller.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+void REMAINTODO(){
+
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await dioInit();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => SplashScreenController(),
+          create: (context) => SplashScreenController(sp: sl()),
         ),
          ChangeNotifierProvider(
           create: (context) => IntroScreenController(),
         ),
         ChangeNotifierProvider(
+          create: (context) => UserProfileController(sp: sl()),
+        ),
+        ChangeNotifierProvider(
           create: (context) => ThemeController(sp: sl<SharedPreferences>()),
         ),
         ChangeNotifierProvider(
-          create: (context) => AuthController(),
+          create: (context) => AuthController(sp: sl()),
         ),
       ],
       child: MyApp(),
