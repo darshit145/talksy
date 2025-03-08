@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:talksy/features/auth/widget/custom_text_field.dart';
 import 'package:talksy/features/chat/widget/reciver_chat.dart';
 import 'package:talksy/features/chat/widget/sender_chat.dart';
 import 'package:talksy/features/remoteuser/screen/remote_user.dart';
+import 'package:talksy/features/videocall/controller/video_screen_controller.dart';
 import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/images.dart';
+import 'package:talksy/util/string_const.dart';
 
 import '../../../util/font_family.dart';
+import '../../auth/screen/login_screen.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -41,11 +45,24 @@ class ChatPage extends StatelessWidget {
             child: Row(
               spacing: 10,
               children: [
-                SvgPicture.asset(
-                  Images.videoCallIcon,
-                  height: 20,
-                  width: 20,
-                ),
+                Consumer<VideoScreenController>(builder: (context, value, child) => GestureDetector(
+                  onTap: () {
+
+                    ///SEND notification to usser 2
+                    ///and setUP firebase
+                    ///navigate to other screen
+                    ///request permition
+
+                    Navigator.pushNamed(context,StringConst.routToVideoCallScreen);
+                    value.makeVideoCall();
+
+                  },
+                  child: SvgPicture.asset(
+                    Images.videoCallIcon,
+                    height: 20,
+                    width: 20,
+                  ),
+                ),),
                 SvgPicture.asset(
                   Images.callIcon,
                   height: 20,
@@ -106,7 +123,7 @@ class ChatPage extends StatelessWidget {
                     Expanded(
                         child: MyTextField(
                             obscureText: false,
-                            hintText: "Send..",
+                            hintText: "Send",
                             controller: TextEditingController())),
                     Container(
                         height: 40,

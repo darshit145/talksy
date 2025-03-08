@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,8 @@ import 'package:talksy/theme/litght_theme.dart';
 import 'features/auth/controller/auth_controller.dart';
 import 'features/intro/controller/intro_screen_controller.dart';
 import 'features/userprofile/controller/user_profile_controller.dart';
+import 'features/videocall/controller/video_screen_controller.dart';
+import 'notification/notification_handler.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void REMAINTODO(){
 
@@ -20,6 +23,9 @@ void REMAINTODO(){
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Firebase.initializeApp();
+  NotificationHandler().initialize();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await dioInit();
   runApp(
     MultiProvider(
@@ -38,6 +44,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => AuthController(sp: sl()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VideoScreenController(),
         ),
       ],
       child: MyApp(),

@@ -13,5 +13,6 @@ static const String routLoginScreenMail="rout_login_screen_mail";
 static const String routMobileAuthScreen="rout_mobile_auth_screen";
 static const String routOtpValidationScreen="rout_otp_validation_screen";
 static const String routHomePage="rout_home_page";
+static const String routToVideoCallScreen="rout_video_call_screen";
 
 }

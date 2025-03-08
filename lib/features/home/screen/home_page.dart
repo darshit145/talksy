@@ -7,6 +7,7 @@ import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/font_family.dart';
 import 'package:talksy/util/images.dart';
 import 'package:talksy/util/string_const.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomePage extends StatelessWidget {
  final FocusNode focusNode=FocusNode();
@@ -22,6 +23,8 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: ColorConst.getWhite(context),
         floatingActionButton:FloatingActionButton(onPressed: () {
+          getFCMToken();
+
           print(generateChatTableName("dfachara10"," dfachara1"));
         },),
         appBar: AppBar(
@@ -211,4 +214,17 @@ class HomePage extends StatelessWidget {
 String generateChatTableName(String userId1, String userId2) {
   List<String> sortedIds = [userId1, userId2]..sort();
   return "${sortedIds[0]}_${sortedIds[1]}"; // Example: dfachara7_dfachara10
+}
+Future<void> getFCMToken() async {
+  try {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken(); // Get FCM token
+    if (token != null) {
+      print("FCM Token: $token");
+    } else {
+      print("Failed to get FCM token");
+    }
+  } catch (e) {
+    print("Error getting FCM token: $e");
+  }
 }

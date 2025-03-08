@@ -8,6 +8,7 @@ import 'package:talksy/features/userprofile/controller/user_profile_controller.d
 import 'package:talksy/theme/controller/theme_controller.dart';
 import 'features/auth/controller/auth_controller.dart';
 import 'features/splash/controller/splash_screen_controller.dart';
+import 'features/videocall/controller/video_screen_controller.dart';
 
   final GetIt sl = GetIt.instance;
 
@@ -26,6 +27,9 @@ Future<void> dioInit() async {
 
   //Profile Screen Controller
   sl.registerLazySingleton(() => UserProfileController(sp: sl()),);
+
+  //FOR Video Call
+  sl.registerLazySingleton(() => VideoScreenController(),);
 
 
 }

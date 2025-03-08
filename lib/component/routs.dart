@@ -9,6 +9,7 @@ import '../features/auth/screen/mobile_auth_screen.dart';
 import '../features/auth/screen/registraation_screen.dart';
 import '../features/auth/screen/validation/otp_validation_screen.dart';
 import '../features/term_and_conditions/screen/term_and_conditions_screen.dart';
+import '../features/videocall/screen/video_call_screen.dart';
 
 Map<String, WidgetBuilder> routes = {
   StringConst.routIntroScreen: (context) => IntroScreen(),
@@ -19,4 +20,5 @@ Map<String, WidgetBuilder> routes = {
   StringConst.routMobileAuthScreen: (context) => MobileAuthScreen(),
   StringConst.routOtpValidationScreen: (context) => OtpValidationScreen(),
   StringConst.routHomePage: (context) =>  HomePage(),
+  StringConst.routToVideoCallScreen: (context) =>  VideoCallScreen(),
 };

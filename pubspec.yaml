@@ -47,6 +47,14 @@ dependencies:
   google_sign_in: ^6.2.2
   bloc: ^9.0.0
 
+  #FOR THE VIDEO CALLING
+  flutter_webrtc: ^0.12.11
+  cloud_firestore: ^5.6.5
+
+  #messaging:
+  firebase_messaging: ^15.2.4
+  googleapis_auth: ^1.6.0
+
 
 dev_dependencies:
   flutter_test:
