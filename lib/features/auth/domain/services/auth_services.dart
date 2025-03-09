@@ -5,4 +5,9 @@ class AuthServices extends AuthServicesInterface{
   final AuthRepoInterface repoInterface;
   AuthServices({required this.repoInterface});
 
+  @override
+  Future<String> loginViaGmail(String jsonEncoded) {
+    return repoInterface.loginViaGmail(jsonEncoded);
+  }
+
 }

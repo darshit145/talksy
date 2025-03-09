@@ -3,4 +3,7 @@ class  AppConstSP{
 
   static const String onBoardingNavigation="on_boarding_navigation";
   static const String loginStatus="set_this_login_status";
+
+  //
+  static const String loginUserTocken="login_user_tocken";
 }

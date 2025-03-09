@@ -4,7 +4,10 @@ import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/font_family.dart';
 
 class CustomTile extends StatelessWidget {
-  const CustomTile({super.key});
+  final String titleText;
+  final String subTitleText;
+  final String photoUrl;
+  const CustomTile({super.key,required this.photoUrl,required this.titleText,required this.subTitleText});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class CustomTile extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24,
+                backgroundImage: NetworkImage(photoUrl),
               ),
               Expanded(
                   child: Column(
@@ -33,7 +37,7 @@ class CustomTile extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "data",
+                          titleText,
                           style: TextStyle(
                               color: ColorConst.getBlack(context),
                               fontFamily: FontFamily.robotoSimple,
@@ -61,7 +65,9 @@ class CustomTile extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    "data",
+                    subTitleText,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: ColorConst.getBlack(context),
                         fontFamily: FontFamily.robotoSimple,

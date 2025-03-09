@@ -12,14 +12,14 @@ import 'package:talksy/theme/dark_theme.dart';
 import 'package:talksy/theme/litght_theme.dart';
 
 import 'features/auth/controller/auth_controller.dart';
+import 'features/home/controller/home_page_controller.dart';
 import 'features/intro/controller/intro_screen_controller.dart';
 import 'features/userprofile/controller/user_profile_controller.dart';
 import 'features/videocall/controller/video_screen_controller.dart';
 import 'notification/notification_handler.dart';
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-void REMAINTODO(){
 
-}
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+void REMAINTODO() {}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -33,7 +33,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => SplashScreenController(sp: sl()),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => IntroScreenController(),
         ),
         ChangeNotifierProvider(
@@ -43,10 +43,13 @@ void main() async {
           create: (context) => ThemeController(sp: sl<SharedPreferences>()),
         ),
         ChangeNotifierProvider(
-          create: (context) => AuthController(sp: sl()),
+          create: (context) => AuthController(sp: sl(),authServicesInterface: sl()),
         ),
         ChangeNotifierProvider(
           create: (context) => VideoScreenController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomePageController(homeServicesInterface: sl(),sp: sl()),
         ),
       ],
       child: MyApp(),
@@ -71,7 +74,8 @@ class MyApp extends StatelessWidget {
     });
   }
 }
-class Get{
-  static BuildContext? get context=>navigatorKey.currentContext;
-  static NavigatorState? get currentState=>navigatorKey.currentState;
+
+class Get {
+  static BuildContext? get context => navigatorKey.currentContext;
+  static NavigatorState? get currentState => navigatorKey.currentState;
 }

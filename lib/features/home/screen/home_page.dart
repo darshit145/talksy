@@ -1,28 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:talksy/component/dev.dart';
 import 'package:talksy/features/home/widget/custom_tile.dart';
+import 'package:talksy/features/home/widget/story_view.dart';
 import 'package:talksy/features/userprofile/screen/user_profile.dart';
 import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/font_family.dart';
 import 'package:talksy/util/images.dart';
 import 'package:talksy/util/string_const.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import "package:http/http.dart" as http;
+
+import '../controller/home_page_controller.dart';
 
 class HomePage extends StatelessWidget {
  final FocusNode focusNode=FocusNode();
+ TextEditingController textEditingController=TextEditingController();
+
     HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() => context.read<HomePageController>().listAllUser(),);
     // focusNode.unfocus();
     return GestureDetector(
       onTap: () {
+        textEditingController.clear();
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         backgroundColor: ColorConst.getWhite(context),
-        floatingActionButton:FloatingActionButton(onPressed: () {
+        floatingActionButton:FloatingActionButton(onPressed: ()async {
+           http.get(Uri.parse(StringConst.listAllUser)).then((value) {
+             print(value.statusCode);
+             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${value.body}");
+           },);
           getFCMToken();
 
           print(generateChatTableName("dfachara10"," dfachara1"));
@@ -76,117 +89,25 @@ class HomePage extends StatelessWidget {
             child: Column(
               spacing: 5,
               children: [
-                CupertinoSearchTextField(
-                  focusNode: focusNode,
-                  itemColor: Colors.black,
-                  style: TextStyle(color: Colors.black),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(8.0),
+                Consumer<HomePageController>(
+                  builder:(context, value, child) =>  CupertinoSearchTextField(
+                    focusNode: focusNode,
+                    controller: textEditingController,
+                    onChanged: (val) {
+                      value.searchUser(val);
+                    },
+                    itemColor: Colors.black,
+                    style: TextStyle(color: Colors.black),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                 ),
                 SizedBox(height: 5,),
-                SizedBox(
-                  height: 80,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 60,
-                                width: 60,
-                                child: Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 28,
-                                      backgroundColor: ColorConst.getBlack(context),
-                                      child: CircleAvatar(
-                                        radius: 26,
-                                        backgroundColor: Colors.white,
-                                        backgroundImage:
-                                            AssetImage(Images.onboarding_3),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: CircleAvatar(
-                                        radius: 10,
-                                        backgroundColor: ColorConst.getBlack(context),
-                                        child: Center(
-                                          child: Icon(Icons.add,size: 15,weight: 10,color: ColorConst.getWhite(context),),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 60,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 2),
-                                  child: Text(
-                                    "Your Story",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: FontFamily.robotoSimple,
-                                        color: ColorConst.getBlack(context)),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 28,
-                              backgroundColor: Color(0xFFD1D5DB),
-                              child: CircleAvatar(
-                                radius: 26,
-                                backgroundColor: Colors.white,
-                                backgroundImage: AssetImage(Images.onboarding_3),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 70,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 2),
-                                child: Text(
-                                  "M.R.Darshit Fachara",
-                                  overflow: TextOverflow.fade,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: FontFamily.robotoSimple,
-                                      color: ColorConst.getBlack(context)),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: 15,
-                    physics: BouncingScrollPhysics(),
-                  ),
-                ),
-                ListView.separated(
+                // StoryView(),
+
+                Consumer<HomePageController>(builder: (context, value, child) => ListView.separated(
                   padding: EdgeInsets.all(0),
 
                   separatorBuilder: (context, index) {
@@ -201,8 +122,13 @@ class HomePage extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                  return CustomTile();
-                },itemCount: 15,)
+
+                    return CustomTile(
+                      photoUrl: value.listOfUsers.result[index].uPhoto,
+                      subTitleText:value.listOfUsers.result[index].uEmail ,
+                      titleText: value.listOfUsers.result[index].uName,
+                    );
+                  },itemCount: value.listOfUsers.result.length,),)
               ],
             ),
           ),

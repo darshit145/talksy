@@ -6,10 +6,10 @@ class ThemeController extends ChangeNotifier{
   SharedPreferences sp;
   ThemeController({required this.sp});
 
-  bool isDarkMod=false;
+  bool isDarkMod=true;
 
   bool isDarkModTheme(){
-    isDarkMod=sp.getBool(AppConstSP.themeSP)??false;
+    isDarkMod=sp.getBool(AppConstSP.themeSP)??true;
     // notifyListeners();
     return isDarkMod;
   }
