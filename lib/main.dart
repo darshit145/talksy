@@ -23,7 +23,6 @@ void REMAINTODO() {}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Firebase.initializeApp();
   NotificationHandler().initialize();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await dioInit();
@@ -31,7 +30,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => SplashScreenController(sp: sl()),
+          create: (context) => SplashScreenController(sp: sl(),splashServiceInterface: sl()),
         ),
         ChangeNotifierProvider(
           create: (context) => IntroScreenController(),
@@ -79,3 +78,13 @@ class Get {
   static BuildContext? get context => navigatorKey.currentContext;
   static NavigatorState? get currentState => navigatorKey.currentState;
 }
+//{
+//     "_id": "67cfd16a134f8e78445a38fb",
+//     "u_email": "dfachara7@gmail.com",
+//     "u_name": "Darshit",
+//     "u_photo": "https://cubanvr.com/wp-content/uploads/2023/07/ai-image-generators.webp",
+//     "u_activestatus": 0,
+//     "createdAt": "2025-03-11T06:00:10.854Z",
+//     "updatedAt": "2025-03-11T06:00:10.854Z",
+//     "__v": 0
+// }

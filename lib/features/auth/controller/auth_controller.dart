@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talksy/features/auth/domain/services/auth_services_interface.dart';
 import 'package:talksy/features/auth/screen/login_screen.dart';
@@ -23,38 +24,44 @@ class AuthController extends ChangeNotifier{
 
 
   Future<void> loginViaGmail(BuildContext context)async{
-    final AuthService authService = AuthService();
-    await authService.logOut();
-    final UserCredential? userCredential = await authService.signInWithGoogle();
-    if (userCredential != null) {
-      ///Make API CALL GET The DATA Store it IN LOCAL device GO to the Home Page
-      ///API request [USER name,email,image]
-      ///IN API request 1 cheack that USER alread EXist or not
-      ///Set the SharedPreferances NO LOGIN screen
-      //THis Becomes True When The Api Responce Get Sucess
-      if(userCredential.user==null){
-        showCupertinoSnackbar("Please try Another Email");
-        return;
-      }
-      Map<String,dynamic> userCreadintial={
-        "u_name": userCredential.user!.displayName,
-        "u_email": userCredential.user!.email,
-        "u_photo": userCredential.user!.photoURL??"https://cdn-icons-png.flaticon.com/512/1173/1173817.png",
-      };
-
-      authServicesInterface.loginViaGmail(jsonEncode(userCreadintial)).then((value) {
-        if(value==StringConst.ERROR){
-          showCupertinoSnackbar("Cheack Your Internet Connection \nPlease Try Again Later");
-        }else{
-          var map=jsonDecode(value);
-          sp.setString(AppConstSP.loginUserTocken,map["message"]);
-          rout(context);
+    // PermitionHandler;
+    if (await Permission.notification.request().isGranted) {
+      // Either the permission was already granted before or the user just granted it.
+      final AuthService authService = AuthService();
+      await authService.logOut();
+      final UserCredential? userCredential = await authService.signInWithGoogle();
+      if (userCredential != null) {
+        ///Make API CALL GET The DATA Store it IN LOCAL device GO to the Home Page
+        ///API request [USER name,email,image]
+        ///IN API request 1 cheack that USER alread EXist or not
+        ///Set the SharedPreferances NO LOGIN screen
+        //THis Becomes True When The Api Response Get Success
+        if(userCredential.user==null){
+          showCupertinoSnackbar("Please try Another Email");
+          return;
         }
-      },
-      );
+        Map<String,dynamic> userCreadintial={
+          "u_name": userCredential.user!.displayName,
+          "u_email": userCredential.user!.email,
+          "u_photo": userCredential.user!.photoURL??"https://cdn-icons-png.flaticon.com/512/1173/1173817.png",
+        };
 
-    } else {
-      showCupertinoSnackbar("Cheack Your Internet Connection\nPlease Try Again Later");
+        authServicesInterface.loginViaGmail(jsonEncode(userCreadintial)).then((value) {
+          if(value==StringConst.ERROR){
+            showCupertinoSnackbar("Cheack Your Internet Connection \nPlease Try Again Later");
+          }else{
+            var map=jsonDecode(value);
+            sp.setString(AppConstSP.loginUserTocken,map["message"]);
+            rout(context);
+          }
+        },
+        );
+
+      } else {
+        showCupertinoSnackbar("Cheack Your Internet Connection\nPlease Try Again Later");
+      }
+    }else{
+      showCupertinoSnackbar("Go to setting app info and turn on notification.");
     }
   }
   void rout(BuildContext context){

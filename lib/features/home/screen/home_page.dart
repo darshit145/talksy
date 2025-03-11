@@ -11,6 +11,7 @@ import 'package:talksy/util/images.dart';
 import 'package:talksy/util/string_const.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:http/http.dart" as http;
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../controller/home_page_controller.dart';
 
@@ -32,11 +33,12 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: ColorConst.getWhite(context),
         floatingActionButton:FloatingActionButton(onPressed: ()async {
-           http.get(Uri.parse(StringConst.listAllUser)).then((value) {
-             print(value.statusCode);
-             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${value.body}");
-           },);
-          getFCMToken();
+          //  http.get(Uri.parse(StringConst.listAllUser)).then((value) {
+          //    print(value.statusCode);
+          //    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${value.body}");
+          //  },);
+          // getFCMToken();
+          Navigator.push(context,MaterialPageRoute(builder: (context) => SocketTestPage(),));
 
           print(generateChatTableName("dfachara10"," dfachara1"));
         },),
@@ -152,5 +154,134 @@ Future<void> getFCMToken() async {
     }
   } catch (e) {
     print("Error getting FCM token: $e");
+  }
+}
+
+class SocketTestPage extends StatefulWidget {
+  @override
+  _SocketTestPageState createState() => _SocketTestPageState();
+}
+
+class _SocketTestPageState extends State<SocketTestPage> {
+  late IO.Socket socket;
+  final TextEditingController _senderController = TextEditingController();
+  final TextEditingController _receiverController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  List<String> messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    connectToServer();
+  }
+
+  void connectToServer() {
+    // Connect to the Socket.io server
+    socket = IO.io('https://23c9-2402-a00-192-75c3-59c5-4c96-b802-d9dc.ngrok-free.app', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': true,
+    });
+
+    // Listen for connection event
+    socket.onConnect((_) {
+      print('Connected to server');
+    });
+
+    // Listen for incoming messages
+    socket.on('receive_message_123', (data) {
+      print('Received message: $data');
+      setState(() {
+        messages.add('From ${data['sender_id']}: ${data['message']}');
+      });
+    });
+
+    // Handle errors
+    socket.onError((error) {
+      print('Socket error: $error');
+    });
+
+    // Handle disconnection
+    socket.onDisconnect((_) {
+      print('Disconnected from server');
+    });
+  }
+
+  void sendMessage() {
+    final String sender = _senderController.text;
+    final String receiver = _receiverController.text;
+    final String message = _messageController.text;
+
+    if (sender.isEmpty || receiver.isEmpty || message.isEmpty) {
+      print('Please fill all fields');
+      return;
+    }
+
+    // Emit the message to the server
+    socket.emit('send_message', {
+      'chatId': 'test_chat',
+      'sender': sender,
+      'receiver': receiver,
+      'message': message,
+    });
+
+    // Clear the message input
+    _messageController.clear();
+  }
+
+  @override
+  void dispose() {
+    socket.disconnect();
+    _senderController.dispose();
+    _receiverController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Socket.io Test'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _senderController,
+              decoration: InputDecoration(labelText: 'Sender ID'),
+            ),
+            TextField(
+              controller: _receiverController,
+              decoration: InputDecoration(labelText: 'Receiver ID'),
+            ),
+            TextField(
+              controller: _messageController,
+              decoration: InputDecoration(labelText: 'Message'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: sendMessage,
+              child: Text('Send Message'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Received Messages:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(messages[index]),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

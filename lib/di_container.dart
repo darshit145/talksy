@@ -8,11 +8,15 @@ import 'package:talksy/features/home/domain/repo/home_repo.dart';
 import 'package:talksy/features/home/domain/repo/home_repo_interface.dart';
 import 'package:talksy/features/home/domain/services/home_services.dart';
 import 'package:talksy/features/home/domain/services/home_services_interface.dart';
+import 'package:talksy/features/splash/domain/services/splash_service.dart';
+import 'package:talksy/features/splash/domain/services/splash_service_interface.dart';
 import 'package:talksy/features/userprofile/controller/user_profile_controller.dart';
 import 'package:talksy/theme/controller/theme_controller.dart';
 import 'features/auth/controller/auth_controller.dart';
 import 'features/home/controller/home_page_controller.dart';
 import 'features/splash/controller/splash_screen_controller.dart';
+import 'features/splash/domain/repo/splash_repo.dart';
+import 'features/splash/domain/repo/splash_repo_interface.dart';
 import 'features/videocall/controller/video_screen_controller.dart';
 
   final GetIt sl = GetIt.instance;
@@ -24,7 +28,9 @@ Future<void> dioInit() async {
   //theme
   sl.registerLazySingleton<ThemeController>(() => ThemeController(sp: sl()));
   //splash
-  sl.registerLazySingleton(() => SplashScreenController(sp: sl()));
+  sl.registerLazySingleton<SplashRepoInterface>(() => SplashRepo());
+  sl.registerLazySingleton<SplashServiceInterface>(() => SplashService(splashRepoInterface: sl()),);
+  sl.registerLazySingleton(() => SplashScreenController(sp: sl(),splashServiceInterface: sl()));
   //Auth
   sl.registerLazySingleton<AuthRepoInterface>(() => AuthRepo());
   sl.registerLazySingleton<AuthServicesInterface>(() => AuthServices(repoInterface: sl()));

@@ -1,3 +1,3 @@
 abstract class SplashServiceInterface{
-  Future<void> getConfig();
+  Future<String> getConfig();
 }

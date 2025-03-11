@@ -6,9 +6,9 @@ class SplashService extends SplashServiceInterface{
   SplashService({required this.splashRepoInterface});
 
   @override
-  Future<void> getConfig() {
+  Future<String> getConfig() {
     // TODO: implement getConfig
-    throw UnimplementedError();
+    return splashRepoInterface.getConfig();
   }
 
 }
