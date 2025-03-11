@@ -143,17 +143,20 @@ String generateChatTableName(String userId1, String userId2) {
   List<String> sortedIds = [userId1, userId2]..sort();
   return "${sortedIds[0]}_${sortedIds[1]}"; // Example: dfachara7_dfachara10
 }
-Future<void> getFCMToken() async {
+Future<String> getFCMToken() async {
   try {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? token = await messaging.getToken(); // Get FCM token
     if (token != null) {
       print("FCM Token: $token");
+      return token;;
     } else {
+      return "";
       print("Failed to get FCM token");
     }
   } catch (e) {
     print("Error getting FCM token: $e");
+    return "";
   }
 }
 

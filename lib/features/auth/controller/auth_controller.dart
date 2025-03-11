@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talksy/features/auth/domain/services/auth_services_interface.dart';
 import 'package:talksy/features/auth/screen/login_screen.dart';
+import 'package:talksy/features/home/screen/home_page.dart';
 
 import '../../../util/app_constantSP.dart';
 import '../../../util/string_const.dart';
@@ -26,6 +27,7 @@ class AuthController extends ChangeNotifier{
   Future<void> loginViaGmail(BuildContext context)async{
     // PermitionHandler;
     if (await Permission.notification.request().isGranted) {
+      String notification=await getFCMToken();
       // Either the permission was already granted before or the user just granted it.
       final AuthService authService = AuthService();
       await authService.logOut();
@@ -44,6 +46,7 @@ class AuthController extends ChangeNotifier{
           "u_name": userCredential.user!.displayName,
           "u_email": userCredential.user!.email,
           "u_photo": userCredential.user!.photoURL??"https://cdn-icons-png.flaticon.com/512/1173/1173817.png",
+          "u_messaging":notification
         };
 
         authServicesInterface.loginViaGmail(jsonEncode(userCreadintial)).then((value) {
