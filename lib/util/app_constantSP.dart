@@ -6,4 +6,6 @@ class  AppConstSP{
 
   //
   static const String loginUserTocken="login_user_tocken";
+
+  static const String uaerEmail="local_user_email";
 }

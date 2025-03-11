@@ -12,6 +12,7 @@ import 'package:talksy/theme/dark_theme.dart';
 import 'package:talksy/theme/litght_theme.dart';
 
 import 'features/auth/controller/auth_controller.dart';
+import 'features/chat/controller/chat_page_controller.dart';
 import 'features/home/controller/home_page_controller.dart';
 import 'features/intro/controller/intro_screen_controller.dart';
 import 'features/userprofile/controller/user_profile_controller.dart';
@@ -49,6 +50,8 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => HomePageController(homeServicesInterface: sl(),sp: sl()),
+        ), ChangeNotifierProvider(
+          create: (context) => ChatPageController(),
         ),
       ],
       child: MyApp(),

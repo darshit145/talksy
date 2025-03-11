@@ -42,6 +42,7 @@ class AuthController extends ChangeNotifier{
           showCupertinoSnackbar("Please try Another Email");
           return;
         }
+        sp.setString(AppConstSP.uaerEmail,userCredential.user!.email.toString());
         Map<String,dynamic> userCreadintial={
           "u_name": userCredential.user!.displayName,
           "u_email": userCredential.user!.email,

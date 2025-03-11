@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy/features/auth/domain/services/auth_services.dart';
+import 'package:talksy/features/chat/domain/model/database_helper.dart';
 import 'package:talksy/features/chat/screen/chat_page.dart';
+import 'package:talksy/util/app_constantSP.dart';
 import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/font_family.dart';
+
+import '../../../di_container.dart';
+import '../../auth/domain/model/model.dart';
 
 class CustomTile extends StatelessWidget {
   final String titleText;
   final String subTitleText;
   final String photoUrl;
-  const CustomTile({super.key,required this.photoUrl,required this.titleText,required this.subTitleText});
+  final SharedPreferences sp;
+  final String notificationTck;
+  const CustomTile({super.key,required this.sp,required this.notificationTck,required this.photoUrl,required this.titleText,required this.subTitleText});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +25,8 @@ class CustomTile extends StatelessWidget {
       child: InkWell(
         splashColor: ColorConst.getDeviderColor(context),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(),));
+           String email=sp.getString(AppConstSP.uaerEmail)??"";
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(tableName:generateChatTableName(email,subTitleText) ,reciverTocken: notificationTck,),));
 
         },
         child: Container(
@@ -82,3 +92,9 @@ class CustomTile extends StatelessWidget {
     );
   }
 }
+  String generateChatTableName(String userId1, String userId2) {
+    userId1 = userId1.split('@')[0];   // Extracts part before '@'
+    userId2 = userId2.split('@')[0];
+    List<String> sortedIds = [userId1, userId2]..sort();
+    return "${sortedIds[0]}_${sortedIds[1]}";
+  }

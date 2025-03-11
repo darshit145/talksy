@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talksy/component/dev.dart';
+import 'package:talksy/features/chat/domain/model/model.dart';
 import 'package:talksy/features/home/widget/custom_tile.dart';
 import 'package:talksy/features/home/widget/story_view.dart';
 import 'package:talksy/features/userprofile/screen/user_profile.dart';
@@ -13,6 +14,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:http/http.dart" as http;
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../../di_container.dart';
+import '../../chat/domain/model/database_helper.dart';
 import '../controller/home_page_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -38,9 +41,14 @@ class HomePage extends StatelessWidget {
           //    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${value.body}");
           //  },);
           // getFCMToken();
-          Navigator.push(context,MaterialPageRoute(builder: (context) => SocketTestPage(),));
-
-          print(generateChatTableName("dfachara10"," dfachara1"));
+          // Navigator.push(context,MaterialPageRoute(builder: (context) => SocketTestPage(),));
+          //
+          // print(generateChatTableName("dfachara10"," dfachara1"));
+          DatabaseHelper2 instance=DatabaseHelper2.instance;
+          Topic r=Topic(reciverId: "reciverId", senderId:" senderId", message:" message", time:" time");
+          instance.insert("ff",r.toMap());
+           var rd=await instance.query("flf");
+          print(rd);
         },),
         appBar: AppBar(
           backgroundColor: ColorConst.getWhite(context),
@@ -126,6 +134,8 @@ class HomePage extends StatelessWidget {
                   itemBuilder: (context, index) {
 
                     return CustomTile(
+                      sp: sl(),
+                      notificationTck: value.listOfUsers.result[index].uMessaging,
                       photoUrl: value.listOfUsers.result[index].uPhoto,
                       subTitleText:value.listOfUsers.result[index].uEmail ,
                       titleText: value.listOfUsers.result[index].uName,

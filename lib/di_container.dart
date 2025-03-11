@@ -13,6 +13,7 @@ import 'package:talksy/features/splash/domain/services/splash_service_interface.
 import 'package:talksy/features/userprofile/controller/user_profile_controller.dart';
 import 'package:talksy/theme/controller/theme_controller.dart';
 import 'features/auth/controller/auth_controller.dart';
+import 'features/chat/controller/chat_page_controller.dart';
 import 'features/home/controller/home_page_controller.dart';
 import 'features/splash/controller/splash_screen_controller.dart';
 import 'features/splash/domain/repo/splash_repo.dart';
@@ -46,6 +47,9 @@ Future<void> dioInit() async {
   sl.registerLazySingleton<HomeRepoInterface>(() => HomeRepo());
   sl.registerLazySingleton<HomeServicesInterface>(() => HomeServices(repoInterface: sl()));
   sl.registerLazySingleton(() => HomePageController(homeServicesInterface: sl(),sp: sl()),);
+
+  //chat_screen
+  sl.registerLazySingleton(() => ChatPageController(),);
 
 
 }

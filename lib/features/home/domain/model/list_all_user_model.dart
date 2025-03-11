@@ -29,6 +29,10 @@ class Result {
   String uEmail;
   String uName;
   String uPhoto;
+  String uMessaging;
+  int uActivestatus;
+  DateTime createdAt;
+  DateTime updatedAt;
   int v;
 
   Result({
@@ -36,6 +40,10 @@ class Result {
     required this.uEmail,
     required this.uName,
     required this.uPhoto,
+    required this.uMessaging,
+    required this.uActivestatus,
+    required this.createdAt,
+    required this.updatedAt,
     required this.v,
   });
 
@@ -44,6 +52,10 @@ class Result {
     uEmail: json["u_email"],
     uName: json["u_name"],
     uPhoto: json["u_photo"],
+    uMessaging: json["u_messaging"],
+    uActivestatus: json["u_activestatus"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -52,6 +64,10 @@ class Result {
     "u_email": uEmail,
     "u_name": uName,
     "u_photo": uPhoto,
+    "u_messaging": uMessaging,
+    "u_activestatus": uActivestatus,
+    "createdAt": createdAt.toIso8601String(),
+    "updatedAt": updatedAt.toIso8601String(),
     "__v": v,
   };
 }

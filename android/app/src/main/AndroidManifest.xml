@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="talksy"
+        android:enableOnBackInvokedCallback="true"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

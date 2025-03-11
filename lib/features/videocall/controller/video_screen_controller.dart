@@ -16,7 +16,7 @@ class VideoScreenController extends ChangeNotifier{
 
 
   Future<void> makeVideoCall()async{
-    showCupertinoSnackbar("Cheack Your Internet Connection\nPlease Try Again Later");
+    // showCupertinoSnackbar("Cheack Your Internet Connection\nPlease Try Again Later");
     await localRenderer.initialize();
     await remoteRenderer.initialize();
 
@@ -70,8 +70,8 @@ class VideoScreenController extends ChangeNotifier{
               "token":
               user2Token,
               "notification": {
-                "body": 'This is the push notification',
-                "title": 'Push Notification',
+                "body": 'You having an incomming call\nTap hear to answer the call',
+                "title": 'Call',
               },
               "data": {"id": id}
             }

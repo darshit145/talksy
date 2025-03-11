@@ -29,8 +29,13 @@ class NotificationHandler {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
 
     });
-    //this wiill runs when the app is open and the messagr recived
+    // this wiill runs when the app is open and the messagr recived
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if(message.data.length>1){
+        print(message.data);
+        print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        return;
+      }
       rooomID=message.data["id"];
       print(message.data["id"]);
       SnackBar snackBar=SnackBar(content: GestureDetector(

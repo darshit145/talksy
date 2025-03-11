@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:talksy/features/auth/widget/custom_text_field.dart';
+import 'package:talksy/features/chat/controller/chat_page_controller.dart';
 import 'package:talksy/features/chat/widget/reciver_chat.dart';
 import 'package:talksy/features/chat/widget/sender_chat.dart';
 import 'package:talksy/features/remoteuser/screen/remote_user.dart';
@@ -12,12 +13,21 @@ import 'package:talksy/util/string_const.dart';
 
 import '../../../util/font_family.dart';
 import '../../auth/screen/login_screen.dart';
+import '../domain/model/database_helper.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
-
+  final List chatList = [];
+  final String reciverTocken;
+  final String tableName;
+  ChatPage({super.key, required this.tableName,required this.reciverTocken});
+  final DatabaseHelper2 databaseHelper2=DatabaseHelper2.instance;
   @override
   Widget build(BuildContext context) {
+    Future.microtask(
+      () {
+        databaseHelper2.fetchAndUpdateStream(tableName);
+      },
+    );
     return Scaffold(
       backgroundColor: ColorConst.getWhite(context),
       appBar: AppBar(
@@ -45,24 +55,25 @@ class ChatPage extends StatelessWidget {
             child: Row(
               spacing: 10,
               children: [
-                Consumer<VideoScreenController>(builder: (context, value, child) => GestureDetector(
-                  onTap: () {
+                Consumer<VideoScreenController>(
+                  builder: (context, value, child) => GestureDetector(
+                    onTap: () {
+                      ///SEND notification to usser 2
+                      ///and setUP firebase
+                      ///navigate to other screen
+                      ///request permition
 
-                    ///SEND notification to usser 2
-                    ///and setUP firebase
-                    ///navigate to other screen
-                    ///request permition
-
-                    Navigator.pushNamed(context,StringConst.routToVideoCallScreen);
-                    value.makeVideoCall();
-
-                  },
-                  child: SvgPicture.asset(
-                    Images.videoCallIcon,
-                    height: 20,
-                    width: 20,
+                      Navigator.pushNamed(
+                          context, StringConst.routToVideoCallScreen);
+                      value.makeVideoCall();
+                    },
+                    child: SvgPicture.asset(
+                      Images.videoCallIcon,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
-                ),),
+                ),
                 SvgPicture.asset(
                   Images.callIcon,
                   height: 20,
@@ -79,7 +90,11 @@ class ChatPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => RemoteUser(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RemoteUser(),
+                        ));
                   },
                   child: CircleAvatar(
                     backgroundColor: Color(0xFFD1D5DB),
@@ -97,49 +112,76 @@ class ChatPage extends StatelessWidget {
           spacing: 3,
           children: [
             Expanded(
-                child: GestureDetector(
+              child: GestureDetector(
                   onTap: () {
                     FocusScope.of(context).unfocus();
                   },
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 5,);
+                  child: StreamBuilder(
+                    stream: databaseHelper2.topicStreamController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print(snapshot.data?.length);
+                        return ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 5,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            if (index % 2 == 0) {
+                              return ReciverChat();
+                            }
+                            return SenderChat();
+                          },
+                          itemCount: snapshot.data!.length,
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
                     },
-                                itemBuilder: (context, index) {
-                  if (index % 2 == 0) {
-                    return ReciverChat();
-                  }
-                  return SenderChat();
-                                },
-                                itemCount: 10,
-                              ),
-                )),
+                  ),
+              ),
+            ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  spacing: 10,
-                  children: [
-                    Expanded(
-                        child: MyTextField(
-                            obscureText: false,
-                            hintText: "Send",
-                            controller: TextEditingController())),
-                    Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: ColorConst.getBlack(context),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SvgPicture.asset(Images.sendIcon,
-                              color: ColorConst.getWhite(context)),
-                        ))
-                  ],
-                ),
-              ),
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Consumer<ChatPageController>(
+                    builder: (context, value, child) => Row(
+                      spacing: 10,
+                      children: [
+                        Expanded(
+                            child: MyTextField(
+                                obscureText: false,
+                                hintText: "Send",
+                                controller: value.textEditingController)),
+                        Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: ColorConst.getBlack(context),
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(8),
+                                highlightColor: Colors.grey,
+                                onTap: () {
+                                  ///send the notification to the user b
+                                  value.sendNotification(
+                                      "sanderName", reciverTocken);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(Images.sendIcon,
+                                      color: ColorConst.getWhite(context)),
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  )),
             )
           ],
         ),
