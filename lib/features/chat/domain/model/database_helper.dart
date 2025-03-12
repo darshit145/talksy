@@ -130,7 +130,8 @@ class DatabaseHelper2 {
 
   Future<int> insert(String tableName, Map<String, dynamic> data) async {
     final db = await instance.db;
-    await createTableIfNotExists(tableName); // Ensure table exists
+    await createTableIfNotExists(tableName);
+    fetchAndUpdateStream(tableName);
     return await db.insert(tableName, data);
   }
 
@@ -156,5 +157,6 @@ class DatabaseHelper2 {
       return Topic.fromMap(e);
     },).toList();
     topicStreamController.add(topics);
+    print("LLLLLLLLLLLLLLLLL$tableName");
   }
 }

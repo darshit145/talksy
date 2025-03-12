@@ -46,8 +46,8 @@ class HomePage extends StatelessWidget {
           // print(generateChatTableName("dfachara10"," dfachara1"));
           DatabaseHelper2 instance=DatabaseHelper2.instance;
           Topic r=Topic(reciverId: "reciverId", senderId:" senderId", message:" message", time:" time");
-          instance.insert("ff",r.toMap());
-           var rd=await instance.query("flf");
+          instance.query("dfachara8_sagarsavaliya1003");
+           var rd=await instance.query("dfachara8_sagarsavaliya1003");
           print(rd);
         },),
         appBar: AppBar(
@@ -149,10 +149,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-String generateChatTableName(String userId1, String userId2) {
-  List<String> sortedIds = [userId1, userId2]..sort();
-  return "${sortedIds[0]}_${sortedIds[1]}"; // Example: dfachara7_dfachara10
-}
+
 Future<String> getFCMToken() async {
   try {
     FirebaseMessaging messaging = FirebaseMessaging.instance;

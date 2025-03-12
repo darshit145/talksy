@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../util/font_family.dart';
 
 class ReciverChat extends StatelessWidget {
-  const ReciverChat({super.key});
+  final String msg;
+  final String time;
+  const ReciverChat({super.key, required this.msg,required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class ReciverChat extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                "datadatadatadatadatadatadatadatadatadatadatadatadatadatadata  hhhhhdfddf",
+                msg,
                 softWrap: true,
                 style: TextStyle(
                     color: Colors.black,
@@ -31,7 +33,7 @@ class ReciverChat extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            Text("data",style: TextStyle(
+            Text(time,style: TextStyle(
                 color: Colors.black,
                 fontSize: 10,
                 fontFamily: FontFamily.robotoSimple,

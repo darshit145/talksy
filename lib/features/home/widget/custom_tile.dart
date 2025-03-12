@@ -16,7 +16,13 @@ class CustomTile extends StatelessWidget {
   final String photoUrl;
   final SharedPreferences sp;
   final String notificationTck;
-  const CustomTile({super.key,required this.sp,required this.notificationTck,required this.photoUrl,required this.titleText,required this.subTitleText});
+  const CustomTile(
+      {super.key,
+      required this.sp,
+      required this.notificationTck,
+      required this.photoUrl,
+      required this.titleText,
+      required this.subTitleText});
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +31,21 @@ class CustomTile extends StatelessWidget {
       child: InkWell(
         splashColor: ColorConst.getDeviderColor(context),
         onTap: () {
-           String email=sp.getString(AppConstSP.uaerEmail)??"";
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(tableName:generateChatTableName(email,subTitleText) ,reciverTocken: notificationTck,),));
-
+          String email = sp.getString(AppConstSP.uaerEmail) ?? "";
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                  sp: sl(),
+                  sender: email.split('@')[0],
+                  tableName: generateChatTableName(email, subTitleText),
+                  // tableName: generateChatTableName("dfachara8", "dfachara8"),
+                  reciverTocken: notificationTck,
+                ),
+              ));
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5,vertical: 6),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
           child: Row(
             spacing: 10,
             children: [
@@ -92,9 +107,10 @@ class CustomTile extends StatelessWidget {
     );
   }
 }
-  String generateChatTableName(String userId1, String userId2) {
-    userId1 = userId1.split('@')[0];   // Extracts part before '@'
-    userId2 = userId2.split('@')[0];
-    List<String> sortedIds = [userId1, userId2]..sort();
-    return "${sortedIds[0]}_${sortedIds[1]}";
-  }
+
+String generateChatTableName(String userId1, String userId2) {
+  userId1 = userId1.split('@')[0];
+  userId2 = userId2.split('@')[0];
+  List<String> sortedIds = [userId1, userId2]..sort();
+  return "${sortedIds[0]}_${sortedIds[1]}";
+}

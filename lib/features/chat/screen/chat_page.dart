@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talksy/features/auth/widget/custom_text_field.dart';
 import 'package:talksy/features/chat/controller/chat_page_controller.dart';
+import 'package:talksy/features/chat/domain/model/model.dart';
 import 'package:talksy/features/chat/widget/reciver_chat.dart';
 import 'package:talksy/features/chat/widget/sender_chat.dart';
 import 'package:talksy/features/remoteuser/screen/remote_user.dart';
@@ -11,6 +13,7 @@ import 'package:talksy/util/color_const.dart';
 import 'package:talksy/util/images.dart';
 import 'package:talksy/util/string_const.dart';
 
+import '../../../util/app_constantSP.dart';
 import '../../../util/font_family.dart';
 import '../../auth/screen/login_screen.dart';
 import '../domain/model/database_helper.dart';
@@ -19,7 +22,10 @@ class ChatPage extends StatelessWidget {
   final List chatList = [];
   final String reciverTocken;
   final String tableName;
-  ChatPage({super.key, required this.tableName,required this.reciverTocken});
+  final SharedPreferences sp;
+  final String sender;
+
+  ChatPage({super.key,required  this.sender,required this.sp, required this.tableName,required this.reciverTocken});
   final DatabaseHelper2 databaseHelper2=DatabaseHelper2.instance;
   @override
   Widget build(BuildContext context) {
@@ -128,10 +134,17 @@ class ChatPage extends StatelessWidget {
                             );
                           },
                           itemBuilder: (context, index) {
-                            if (index % 2 == 0) {
-                              return ReciverChat();
+                            if (snapshot.data![index].senderId==sender) {
+                              return ReciverChat(
+                                msg: snapshot.data![index].message,
+                                time: snapshot.data![index].time,
+
+                              );
                             }
-                            return SenderChat();
+                            return SenderChat(
+                              msg: snapshot.data![index].message,
+                              time: snapshot.data![index].time,
+                            );
                           },
                           itemCount: snapshot.data!.length,
                         );
@@ -169,8 +182,10 @@ class ChatPage extends StatelessWidget {
                                 highlightColor: Colors.grey,
                                 onTap: () {
                                   ///send the notification to the user b
-                                  value.sendNotification(
-                                      "sanderName", reciverTocken);
+
+                                  String email=sp.getString(AppConstSP.uaerEmail)??"";
+                                  value.sendNotification(tableName,sender,
+                                     email , reciverTocken);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),

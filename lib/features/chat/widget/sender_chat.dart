@@ -4,7 +4,9 @@ import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
 
 class SenderChat extends StatelessWidget {
-  const SenderChat({super.key});
+  final String msg;
+  final String time;
+  const SenderChat({super.key, required this.msg,required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +23,39 @@ class SenderChat extends StatelessWidget {
               topLeft: Radius.circular(12),
             )),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "datadatadatadatadatadatadatadatadatadatadatadatadata",
-              style: TextStyle(
-                  color: ColorConst.getWhite(context),
-                  fontSize: 14,
-                  fontFamily: FontFamily.robotoSimple,
-                  fontWeight: FontWeight.w500),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                spacing: 6,
-                children: [
-                  Icon(
-                    Icons.read_more,
-                    size: 10,
+            Padding(
+              padding: const EdgeInsets.only(left: 10,right:10),
+              child: Text(
+                msg,
+                style: TextStyle(
                     color: ColorConst.getWhite(context),
-                  ),
-                  Text(
-                    "Time",
-                    style: TextStyle(
-                        color: ColorConst.getWhite(context),
-                        fontSize: 8,
-                        fontFamily: FontFamily.robotoSimple,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ],
+                    fontSize: 14,
+                    fontFamily: FontFamily.robotoSimple,
+                    fontWeight: FontWeight.w500),
               ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              spacing: 6,
+              children: [
+                // Icon(
+                //   Icons.read_more,
+                //   size: 10,
+                //   color: ColorConst.getWhite(context),
+                // ),
+                Text(
+                  time,
+                  style: TextStyle(
+                      color: ColorConst.getWhite(context),
+                      fontSize: 8,
+                      fontFamily: FontFamily.robotoSimple,
+                      fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
             )
           ],
         ),

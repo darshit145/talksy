@@ -4,10 +4,16 @@ import 'package:flutter/cupertino.dart';
 
 import '../../videocall/controller/video_screen_controller.dart';
 import 'package:http/http.dart' as http;
+
+import '../domain/model/database_helper.dart';
+import '../domain/model/model.dart';
 class ChatPageController extends ChangeNotifier{
   TextEditingController textEditingController = TextEditingController();
 
-  Future<void> sendNotification(String sanderName,String reciverTCK)async{
+  Future<void> sendNotification(String tableName,String sender,String sanderName,String reciverTCK)async{
+    DatabaseHelper2 databaseHelper2=DatabaseHelper2.instance;
+    Topic topic=Topic(reciverId: "", senderId:sender, message:textEditingController.text.toString(), time:"${DateTime.now().hour}:${DateTime.now().minute}");
+    databaseHelper2.insert(tableName,topic.toMap());
     String msg=textEditingController.text.trim().toString();
     await Future.delayed(Duration(seconds: 5));
     String token = await getKey();
